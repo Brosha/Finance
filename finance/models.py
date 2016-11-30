@@ -34,6 +34,19 @@ class Charge(models.Model):
         db_table = 'charges'
 
 
+class Goal(models.Model):
+    value = models.DecimalField(decimal_places=2, max_digits=10)
+    goalValue = models.DecimalField(decimal_places=2, max_digits=10)
+    date = models.DateField()
+    category = models.CharField(max_length=100, blank=True)
+    purpose = models.CharField(max_length=150, blank=True)
+    account = models.ForeignKey(Account, related_name='+')
+
+    class Meta:
+        db_table = 'goals'
+
+
+
 class UserForm(ModelForm):
     class Meta:
         model = User

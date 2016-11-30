@@ -3,7 +3,7 @@ from django.core.exceptions import ValidationError
 from datetime import date
 from django.forms import ModelForm
 from django.db.models import F
-from finance.models import Charge, Account
+from finance.models import Charge, Account, Goal
 
 
 class ChargeForm(ModelForm):
@@ -34,6 +34,23 @@ class ChargeForm(ModelForm):
 
         if (value <= 0)and(date >= date.today()):
             raise ValidationError('You can not spend money in the future')
+
+
+class GoalForm(ModelForm):
+    class Meta:
+        model = Goal
+        fields = ['goalValue', 'purpose', 'category']
+
+    def clean_goalValue(self):
+        try:
+            goalValue = self.cleaned_data.get('goalValue')
+        except:
+            raise ValidationError('Invalid money input')
+
+        print(goalValue)
+        if (goalValue <= 0):
+            raise ValidationError('You can not make negative goal')
+        return goalValue
 
 
 class AccountForm(ModelForm):

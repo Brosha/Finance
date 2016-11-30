@@ -10,7 +10,7 @@ from finance import controller
 from decimal import Decimal
 from datetime import date
 from finance.models import Account, Charge , UserForm
-from finance.form_validation import ChargeForm, GetAccountsListForm, AccountForm
+from finance.form_validation import ChargeForm, GetAccountsListForm, AccountForm, GoalForm
 from random import randint
 from finance.statistics import getTotalLine, getTotalTable
 from pathlib import Path
@@ -73,7 +73,6 @@ def account_status(request, account_id=0):
 
 def add_charge(request, account_id=0):
     if request.method == 'POST':
-        print(2)
         form = ChargeForm(request.POST)
         info = 'Form is filled, but not correct'
 
@@ -104,6 +103,33 @@ def add_charge(request, account_id=0):
 
     return render(
         request, 'input.html',
+        {'form': form, 'info': info, 'account_id': account_id}
+    )
+
+
+
+def add_goal(request, account_id=0):
+    if request.method == 'POST':
+        print(2)
+        form = GoalForm(request.POST)
+        info = 'Form is filled, but not correct'
+
+        if form.is_valid():
+            info = 'Form is filled and correct'
+            #with transaction.atomic():
+            acc = Account.objects.get(account_number=account_id)
+            goal = form.save(commit=False)
+            goal.account_id = acc.id
+            goal.date = date.today()
+            goal.value = 0
+            goal.save()
+            return redirect('status', account_id)
+    else:
+        info = 'Form is not filled'
+        form = GoalForm(initial={'goalValue': Decimal(100), 'purpose': str(140), 'category': str(140)})
+
+    return render(
+        request, 'add_goal.html',
         {'form': form, 'info': info, 'account_id': account_id}
     )
 
