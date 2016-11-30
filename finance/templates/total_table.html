@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="jumbotron" style ="background-color:#e0e0e0" >
+      <div class="container" style="text-align:center">
+
+		<h1></h1>
+		</div>
+    </div>
+
+    <div class="container" style="text-align:center">
+        {% for charge in account %}
+            {% if forloop.first %}
+                <h2>Total</h2>
+                </br>
+                <table class="table"  >
+                    <thead>
+                        <tr>
+                            <th style="text-align:center">Year</th>
+                            <th style="text-align:center">Month</th>
+                            <th style="text-align:center">Total</th>
+
+                        </tr>
+                    </thead>
+				    <tbody>
+            {% endif %}
+                        <tr>
+                            <td>{{charge.year}}</td>
+                            <td>{{charge.mon}}</td>
+
+                            <td>{{charge.subtotal}}</td>
+
+                        </tr>
+
+
+            {% if forloop.last %}
+                    </tbody>
+                </table>
+            {% endif %}
+        {% endfor %}
+    </div>
+        <div class="container">
+            <p style="text-align:right">
+                <b>Your total: {{acc.total}}</b>
+            </p>
+        </div>
+
+    </div>
+    <div class="container">
+        <div class="control-group">
+            <p style="text-align:center">
+                {% url 'status' account_id as status_url %}
+                <a class="btn btn-primary btn-lg" href="../../..{{status_url}}" role="button">Account</a>
+            </p>
+        </div>
+    </div>
+    <div class="container">
+        <div class="control-group">
+            <p style="text-align:center">
+                {% url 'total_line' account_id as download_stat %}
+                <a class="btn btn-primary btn-lg" href="../../..{{download_stat}}" role="button">Download statistic</a>
+            </p>
+        </div>
+    </div>
+{% endblock %}
