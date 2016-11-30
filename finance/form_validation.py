@@ -82,3 +82,7 @@ class UserForm(ModelForm):
         model = User
         fields = ['username', 'password', 'phone_number', 'adress']
 
+
+class LoginForm(forms.Form):
+    username = forms.CharField()
+    password = forms.CharField()

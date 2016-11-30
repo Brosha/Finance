@@ -5,7 +5,7 @@ from finance import controller
 from decimal import Decimal
 from datetime import date
 from finance.models import Account, Charge
-from finance.form_validation import ChargeForm, GetAccountsListForm, AccountForm, GoalForm, UserForm
+from finance.form_validation import ChargeForm, GetAccountsListForm, AccountForm, GoalForm, UserForm, LoginForm
 from random import randint
 from finance.statistics import getTotalLine, getTotalTable
 from django.db import transaction
@@ -160,5 +160,22 @@ def register(request):
         form = UserForm()
     return render(
         request, 'register.html',
+        {'form': form, 'info': info}
+        )
+
+
+def login(request):
+    if request.method == 'POST':
+        form = LoginForm(request.POST)
+        info = 'Username and password are filled, but not correct'
+        if form.is_valid():
+            print(form.cleaned_data['username'])
+            print(form.cleaned_data['password'])
+            info = 'Username and password are filled and correct'
+    else:
+        info = 'Username and password are not filled'
+        form = LoginForm()
+    return render(
+        request, 'login.html',
         {'form': form, 'info': info}
         )
