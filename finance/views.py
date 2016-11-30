@@ -1,21 +1,16 @@
-import os
-from wsgiref.util import FileWrapper
-
 from django.http import HttpResponse
-from django.contrib.auth.models import User
 from django.shortcuts import render
 from django.shortcuts import redirect
-from django.utils.encoding import smart_str
 from finance import controller
 from decimal import Decimal
 from datetime import date
-from finance.models import Account, Charge , UserForm
-from finance.form_validation import ChargeForm, GetAccountsListForm, AccountForm, GoalForm
+from finance.models import Account, Charge
+from finance.form_validation import ChargeForm, GetAccountsListForm, AccountForm, GoalForm, UserForm
 from random import randint
 from finance.statistics import getTotalLine, getTotalTable
-from pathlib import Path
 from django.db import transaction
 import csv
+
 
 def home(request):
     if request.method == 'POST':
@@ -51,7 +46,6 @@ def total(request, account_id):
     acc = Account.objects.get(account_number=account_id)
     charges = list(Charge.objects.filter(account=acc.id).order_by('date'))
     file_name = getTotalLine(charges, acc)
-
     charges = getTotalTable(account_id)
     acc = Account.objects.get(account_number=account_id)
     return render(
@@ -107,10 +101,8 @@ def add_charge(request, account_id=0):
     )
 
 
-
 def add_goal(request, account_id=0):
     if request.method == 'POST':
-        print(2)
         form = GoalForm(request.POST)
         info = 'Form is filled, but not correct'
 
@@ -136,7 +128,6 @@ def add_goal(request, account_id=0):
 
 def add_account(request):
     if request.method == 'POST':
-        print(3)
         form = AccountForm(request.POST)
         info = 'Account is filled, but not correct'
         if form.is_valid():
@@ -158,7 +149,6 @@ def add_account(request):
 
 def register(request):
     if request.method == 'POST':
-        print(3)
         form = UserForm(request.POST)
         info = 'Account is filled, but not correct'
         if form.is_valid():

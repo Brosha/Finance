@@ -44,10 +44,3 @@ class Goal(models.Model):
 
     class Meta:
         db_table = 'goals'
-
-
-
-class UserForm(ModelForm):
-    class Meta:
-        model = User
-        fields = ['username', 'password','phone_number','adress']

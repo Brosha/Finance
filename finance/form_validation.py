@@ -1,9 +1,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
-from datetime import date
 from django.forms import ModelForm
-from django.db.models import F
-from finance.models import Charge, Account, Goal
+from finance.models import Charge, Account, Goal, User
 
 
 class ChargeForm(ModelForm):
@@ -77,4 +75,10 @@ class AccountForm(ModelForm):
 
 class GetAccountsListForm(forms.Form):
     account = forms.ModelChoiceField(queryset=Account.objects.all(), initial=0, to_field_name='account_number')
+
+
+class UserForm(ModelForm):
+    class Meta:
+        model = User
+        fields = ['username', 'password', 'phone_number', 'adress']
 
