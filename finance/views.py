@@ -4,7 +4,7 @@ from django.shortcuts import redirect
 from finance import controller
 from decimal import Decimal
 from datetime import date
-from finance.models import Account, Charge, User
+from finance.models import Account, Charge, User, Goal
 from finance.form_validation import ChargeForm, GetAccountsListForm, AccountForm, GoalForm, UserForm, LoginForm
 from random import randint
 from finance.statistics import getTotalLine, getTotalTable
@@ -104,6 +104,15 @@ def add_charge(request, account_id=0):
     )
 
 
+def account_goal_status(request, account_id=0):
+    acc = Account.objects.get(account_number=account_id)
+    goals = list(Goal.objects.filter(account=acc.id).order_by('date'))
+    return render(
+        request, 'goals.html',
+        {'account': goals, 'account_id': account_id, 'acc': acc}
+    )
+
+
 def add_goal(request, account_id=0):
     if request.method == 'POST':
         form = GoalForm(request.POST)
@@ -118,7 +127,7 @@ def add_goal(request, account_id=0):
             goal.date = date.today()
             goal.value = 0
             goal.save()
-            return redirect('status', account_id)
+            return redirect('goals', account_id)
     else:
         info = 'Form is not filled'
         form = GoalForm(initial={'goalValue': Decimal(100), 'purpose': str(140), 'category': str(140)})
@@ -139,6 +148,7 @@ def add_account(request):
                 number = randint(0, 100000)
                 acc = form.save(commit=False)
                 acc.account_number = number
+                acc.user_id = 1
                 acc.save()
                 return redirect('status', number)
     else:
