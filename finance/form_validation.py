@@ -74,7 +74,17 @@ class AccountForm(ModelForm):
 
 
 class GetAccountsListForm(forms.Form):
-    account = forms.ModelChoiceField(queryset=Account.objects.all(), initial=0, to_field_name='account_number')
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user_id')
+        print(user)
+        super(GetAccountsListForm, self).__init__(*args, **kwargs)
+        account = forms.ModelChoiceField(queryset=Account.objects.filter(user_id=user),
+                                         initial=0,
+                                         to_field_name='account_number')
+
+    account = forms.ModelChoiceField(queryset=Account.objects.all(),
+                                     initial=0,
+                                     to_field_name='account_number')
 
 
 class UserForm(ModelForm):

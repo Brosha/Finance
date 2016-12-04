@@ -1,10 +1,52 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "base.html" %}
+{% block content %}
 
-</body>
-</html>
+    <div class="jumbotron" style ="background-color:#e0e0e0" >
+      <div class="container" style="text-align:center">
+		<p></p>
+		<h1>Welcome to your personal wallet</h1>
+		<p>This service allows you to manage your accounts and track charges. Detailed account statistics will give you more information about spending.</p>
+
+      </div>
+    </div>
+
+	<div class="container"  >
+      <div class="container" style="padding:75px">
+		<div style="text-align:center">
+			<h2>Check out account example</h2>
+
+			<p>You can experience benefits of using our services by randomly generated account.</p>
+			<div class="control-group">
+			<p style="text-align:center"><a class="btn btn-primary btn-lg" href="/charges/" role="button">Generate</a></p>
+			</div>
+        </div>
+      </div>
+
+		<div class="container" style="padding:75px">
+			<div style="text-align:center">
+				<h2>Choose your account or create new</h2>
+			</div>
+			<div style="text-align:center">
+				<form class="form" action="{% url 'profile' user_id %}" method="post">
+					{{ form }}
+					<div style="text-align:center">
+						<button type="submit" class="btn btn-primary btn-lg">Submit</button>
+					</div>
+				</form>
+			</div>
+		</div>
+
+		<div class="container" style="padding:75px">
+		<div style="text-align:center">
+			<h2>Add account</h2>
+
+			<p>Add new account</p>
+			<div class="control-group">
+			<p style="text-align:center"><a class="btn btn-primary btn-lg" href="/addaccount/" role="button">Validation form</a></p>
+			</div>
+        </div>
+
+      </div>
+    </div>
+
+{% endblock %}

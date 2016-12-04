@@ -12,18 +12,12 @@ from django.db import transaction
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.messages import error
+from django.contrib.auth.decorators import login_required
 import csv
 
 
 def home(request):
-    if request.method == 'POST':
-        form = GetAccountsListForm(request.POST)
-        if form.is_valid():
-            return redirect('status', form.cleaned_data.get('account').account_number)
-    else:
-        form = GetAccountsListForm()
-    return render(request, 'home.html',
-                  {'form': form})
+    return render(request, 'home.html')
 
 
 def random_example(request):
@@ -34,6 +28,7 @@ def random_example(request):
     )
 
 
+@login_required(login_url='login')
 def send_total(request, account_id):
     charges = getTotalTable(account_id)
     response = HttpResponse(content_type='text/csv')
@@ -45,6 +40,7 @@ def send_total(request, account_id):
     return response
 
 
+@login_required(login_url='login')
 def total(request, account_id):
     acc = Account.objects.get(account_number=account_id)
     charges = list(Charge.objects.filter(account=acc.id).order_by('date'))
@@ -57,6 +53,7 @@ def total(request, account_id):
     )
 
 
+@login_required(login_url='login')
 def account_status(request, account_id=0):
     acc = Account.objects.get(account_number=account_id)
     charges = list(Charge.objects.filter(account=acc.id).order_by('date'))
@@ -68,6 +65,7 @@ def account_status(request, account_id=0):
     )
 
 
+@login_required(login_url='login')
 def add_charge(request, account_id=0):
     if request.method == 'POST':
         form = ChargeForm(request.POST)
@@ -104,6 +102,7 @@ def add_charge(request, account_id=0):
     )
 
 
+@login_required(login_url='login')
 def account_goal_status(request, account_id=0):
     acc = Account.objects.get(account_number=account_id)
     goals = list(Goal.objects.filter(account=acc.id).order_by('date'))
@@ -113,6 +112,7 @@ def account_goal_status(request, account_id=0):
     )
 
 
+@login_required(login_url='login')
 def add_goal(request, account_id=0):
     if request.method == 'POST':
         form = GoalForm(request.POST)
@@ -138,6 +138,7 @@ def add_goal(request, account_id=0):
     )
 
 
+@login_required(login_url='login')
 def add_account(request):
     if request.method == 'POST':
         form = AccountForm(request.POST)
@@ -216,3 +217,16 @@ def login_view(request):
         request, 'login.html',
         {'form': form, 'info': info}
         )
+
+
+@login_required(login_url='login')
+def profile(request, user_id=0):
+    if request.method == 'POST':
+        form = GetAccountsListForm(request.POST,user_id=user_id)
+        if form.is_valid():
+            return redirect('status', form.cleaned_data.get('account').account_number)
+    else:
+        form = GetAccountsListForm(user_id=user_id)
+        #form.fields['account'].queryset = Account.objects.get(user_id=user_id)
+    return render(request, 'profile.html',
+                  {'form': form, 'user_id': user_id})
