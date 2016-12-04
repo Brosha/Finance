@@ -46,7 +46,7 @@ class GoalForm(ModelForm):
             raise ValidationError('Invalid money input')
 
         print(goalValue)
-        if (goalValue <= 0):
+        if goalValue <= 0:
             raise ValidationError('You can not make negative goal')
         return goalValue
 
@@ -54,7 +54,7 @@ class GoalForm(ModelForm):
 class AccountForm(ModelForm):
     class Meta:
         model = Account
-        fields = ['name','total']
+        fields = ['name', 'total']
 
     def clean_name(self):
         try:
@@ -80,7 +80,7 @@ class GetAccountsListForm(forms.Form):
 class UserForm(ModelForm):
     class Meta:
         model = User
-        fields = ['username', 'password', 'phone_number', 'adress']
+        fields = ['username', 'password', 'phone_number', 'address']
 
 
 class LoginForm(forms.Form):

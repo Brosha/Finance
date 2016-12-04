@@ -1,4 +1,4 @@
-from finance.views import home,add_charge,account_status,random_example, add_account, send_total, total, register, add_goal, login
+from finance.views import home,add_charge,account_status,random_example, add_account, send_total, total, register, add_goal, login_view
 from django.conf.urls import include, url
 urlpatterns = [
     url(r'^$', home, name='home'),
@@ -10,5 +10,5 @@ urlpatterns = [
     url(r'^download/total/(?P<account_id>\d{1,16})/$', send_total, name='total_line'),
     url(r'^statistic/total/(?P<account_id>\d{1,16})/$', total, name='total_table'),
     url(r'^register/$', register, name='register'),
-    url(r'^login/$', login, name='login'),
+    url(r'^login/$', login_view, name='login'),
     ]

@@ -4,11 +4,14 @@ from django.shortcuts import redirect
 from finance import controller
 from decimal import Decimal
 from datetime import date
-from finance.models import Account, Charge
+from finance.models import Account, Charge, User
 from finance.form_validation import ChargeForm, GetAccountsListForm, AccountForm, GoalForm, UserForm, LoginForm
 from random import randint
 from finance.statistics import getTotalLine, getTotalTable
 from django.db import transaction
+from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.messages import error
 import csv
 
 
@@ -153,8 +156,20 @@ def register(request):
         info = 'Account is filled, but not correct'
         if form.is_valid():
             info = 'Account is filled and correct'
-            user = form.save()
+            # user = form.save()
+            # user.save()
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            address = form.cleaned_data['address']
+            phone = form.cleaned_data['phone_number']
+            print(form.cleaned_data)
+            user = User.objects.create_user(username=username,
+                                            password=password,
+                                            address=address,
+                                            phone_number=phone
+                                            )
             user.save()
+            return redirect('/')
     else:
         info = 'Account is not filled'
         form = UserForm()
@@ -164,14 +179,26 @@ def register(request):
         )
 
 
-def login(request):
+def login_view(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)
         info = 'Username and password are filled, but not correct'
         if form.is_valid():
-            print(form.cleaned_data['username'])
-            print(form.cleaned_data['password'])
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            print(username)
+            print(password)
+            if not (username and password):
+                print('Username or password is null')
+                return render(request, 'login.html', {'form': form, 'info': info})
+            user = authenticate(username=username, password=password)
+            if not user:
+                print('login error!!!')
+                error(request, 'Wrong credentials!')
+                return render(request, 'login.html', {'form': form, 'info': info})
+            login(request, user)
             info = 'Username and password are filled and correct'
+            return redirect('/')
     else:
         info = 'Username and password are not filled'
         form = LoginForm()
