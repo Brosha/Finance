@@ -149,7 +149,7 @@ def add_account(request):
                 number = randint(0, 100000)
                 acc = form.save(commit=False)
                 acc.account_number = number
-                acc.user_id = 1
+                acc.user_id = request.user.id
                 acc.save()
                 return redirect('status', number)
     else:
