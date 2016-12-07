@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+from django.http import HttpResponse,HttpResponseRedirect
 from django.shortcuts import render
 from django.shortcuts import redirect
 from finance import controller
@@ -208,6 +208,8 @@ def login_view(request):
                 error(request, 'Wrong credentials!')
                 return render(request, 'login.html', {'form': form, 'info': info})
             login(request, user)
+            request.session.set_expiry(300)
+            request.session['user_id'] = user.id
             info = 'Username and password are filled and correct'
             return redirect('/')
     else:
@@ -220,9 +222,12 @@ def login_view(request):
 
 
 @login_required(login_url='login')
-def profile(request, user_id=0):
+def profile(request):
+    #user_id = request.session['user_id']
+    user_id = request.user.id
+    print(user_id)
     if request.method == 'POST':
-        form = GetAccountsListForm(request.POST,user_id=user_id)
+        form = GetAccountsListForm(request.POST, user_id=user_id)
         if form.is_valid():
             return redirect('status', form.cleaned_data.get('account').account_number)
     else:
@@ -230,3 +235,8 @@ def profile(request, user_id=0):
         #form.fields['account'].queryset = Account.objects.get(user_id=user_id)
     return render(request, 'profile.html',
                   {'form': form, 'user_id': user_id})
+
+
+def logout_view(request):
+    logout(request)
+    return HttpResponseRedirect('/')
