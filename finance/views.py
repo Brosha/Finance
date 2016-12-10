@@ -1,4 +1,4 @@
-from django.http import HttpResponse,HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.shortcuts import redirect
 from finance import controller
@@ -16,6 +16,16 @@ from django.contrib.auth.decorators import login_required
 import csv
 
 
+def user_check(view):
+    def wrapped(request, account_id, *args, **kwargs):
+        acc = Account.objects.get(account_number=account_id)
+        if request.user.id == acc.user_id:
+            return view(request, account_id, *args, **kwargs)
+        else:
+            return HttpResponseRedirect('/login/')
+    return wrapped
+
+
 def home(request):
     return render(request, 'home.html')
 
@@ -28,18 +38,24 @@ def random_example(request):
     )
 
 
+@user_check
 @login_required(login_url='login')
 def send_total(request, account_id):
-    charges = getTotalTable(account_id)
-    response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="Totalstat.csv"'
-    writer = csv.writer(response)
-    writer.writerow(['Year', 'Month', 'Total'])
-    for charge in charges:
-        writer.writerow([charge['year'], charge['mon'], charge['subtotal']])
-    return response
+    acc = Account.objects.get(account_number=account_id)
+    if request.user.id == acc.user_id:
+        charges = getTotalTable(account_id)
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="Totalstat.csv"'
+        writer = csv.writer(response)
+        writer.writerow(['Year', 'Month', 'Total'])
+        for charge in charges:
+            writer.writerow([charge['year'], charge['mon'], charge['subtotal']])
+        return response
+    else:
+        return HttpResponseRedirect('/')
 
 
+@user_check
 @login_required(login_url='login')
 def total(request, account_id):
     acc = Account.objects.get(account_number=account_id)
@@ -53,6 +69,7 @@ def total(request, account_id):
     )
 
 
+@user_check
 @login_required(login_url='login')
 def account_status(request, account_id=0):
     acc = Account.objects.get(account_number=account_id)
@@ -65,6 +82,7 @@ def account_status(request, account_id=0):
     )
 
 
+@user_check
 @login_required(login_url='login')
 def add_charge(request, account_id=0):
     if request.method == 'POST':
@@ -90,8 +108,6 @@ def add_charge(request, account_id=0):
                 acc.save()
                 charg.save()
                 return redirect('status', account_id)
-
-
     else:
         info = 'Form is not filled'
         form = ChargeForm(initial={'value': Decimal(100), 'date': date.today()})
@@ -102,16 +118,21 @@ def add_charge(request, account_id=0):
     )
 
 
+@user_check
 @login_required(login_url='login')
 def account_goal_status(request, account_id=0):
     acc = Account.objects.get(account_number=account_id)
-    goals = list(Goal.objects.filter(account=acc.id).order_by('date'))
-    return render(
-        request, 'goals.html',
-        {'account': goals, 'account_id': account_id, 'acc': acc}
-    )
+    if request.user.id == acc.user_id:
+        goals = list(Goal.objects.filter(account=acc.id).order_by('date'))
+        return render(
+            request, 'goals.html',
+            {'account': goals, 'account_id': account_id, 'acc': acc}
+        )
+    else:
+        return HttpResponseRedirect('/')
 
 
+@user_check
 @login_required(login_url='login')
 def add_goal(request, account_id=0):
     if request.method == 'POST':
@@ -240,3 +261,6 @@ def profile(request):
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect('/')
+
+
+
