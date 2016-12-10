@@ -16,10 +16,11 @@ from django.contrib.auth.decorators import login_required
 import csv
 
 
+#This decorator is checking user
 def user_check(view):
     def wrapped(request, account_id, *args, **kwargs):
         acc = Account.objects.get(account_number=account_id)
-        if request.user.id == acc.user_id:
+        if request.user.id == acc.user_id or request.user.is_superuser:
             return view(request, account_id, *args, **kwargs)
         else:
             return HttpResponseRedirect('/login/')
