@@ -45,5 +45,6 @@ def getTotalTable (account_number):
         temp = charge['subtotal']
         charge['subtotal'] = total
         total = total - temp
+    print(charges)
     return charges
 

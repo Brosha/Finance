@@ -8,6 +8,8 @@ class IsAccountOwner(permissions.BasePermission):
 
 
 class IsChargeOwner(permissions.BasePermission):
-    def has_object_permission(self,request, view, obj):
+    def has_object_permission(self, request, view, obj):
         acc = Account.objects.get(pk=obj.account_id)
         return request.user.id == acc.user_id
+
+
