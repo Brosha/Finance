@@ -5,6 +5,8 @@ from django.http import HttpResponse
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
+from rest_framework.permissions import IsAdminUser
+from api.permissions import IsAccountOwner, IsChargeOwner
 
 
 class JSONResponse(HttpResponse):
@@ -30,14 +32,15 @@ class JSONResponse(HttpResponse):
 
 class AccountViewSet(viewsets.ModelViewSet):
     serializer_class = AccountSerializer
+    permission_classes = (IsAdminUser, IsAccountOwner)
 
     def get_queryset(self):
         return Account.objects.filter(user_id=self.request.user.id)
 
 
 class ChargeViewSet(viewsets.ModelViewSet):
-
     serializer_class = ChargeSerializer
+    permission_classes = (IsAdminUser, IsChargeOwner)
 
     def get_queryset(self):
         return Charge.objects.filter(account_id__userid__exact=self.request.user.id)
