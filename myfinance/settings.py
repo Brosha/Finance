@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'finance'
+    'rest_framework',
+    'finance',
 ]
 
 MIDDLEWARE = [
@@ -129,4 +130,19 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static/img')
 ]
 
-AUTH_USER_MODEL='finance.User'
+AUTH_USER_MODEL = 'finance.User'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+    'DEFAULT_PARSER_CLASSES': [
+        'rest_framework.parsers.JSONParser',
+    ],
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+    ],
+}
