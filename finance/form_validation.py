@@ -95,3 +95,7 @@ class UserForm(ModelForm):
 class LoginForm(forms.Form):
     username = forms.CharField()
     password = forms.CharField(widget=PasswordInput)
+
+
+class AddCashToGoal(forms.Form):
+    AddValue = forms.DecimalField(decimal_places= 2, max_digits = 8)

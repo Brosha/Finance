@@ -5,7 +5,7 @@ from finance import controller
 from decimal import Decimal
 from datetime import date
 from finance.models import Account, Charge, User, Goal
-from finance.form_validation import ChargeForm, GetAccountsListForm, AccountForm, GoalForm, UserForm, LoginForm
+from finance.form_validation import ChargeForm, GetAccountsListForm, AccountForm, GoalForm, UserForm, LoginForm, AddCashToGoal
 from random import randint
 from finance.statistics import getTotalLine, getTotalTable
 from django.db import transaction
@@ -158,6 +158,27 @@ def add_goal(request, account_id=0):
         request, 'add_goal.html',
         {'form': form, 'info': info, 'account_id': account_id}
     )
+
+
+def add_value_goal(request, goal_id=0):
+    if request.method == 'POST':
+        form = AddCashToGoal(request.POST)
+        info = 'goal form is filled, but not correct'
+        if form.is_valid():
+            info = 'goal form is filled and correct'
+            goal = Goal.objects.get(pk = goal_id)
+            val = form.cleaned_data['AddValue']
+            goal.value += val
+            goal.save()
+            return redirect('/')
+    else:
+        info = 'goal form is not filled'
+        form = AddCashToGoal()
+    return render(
+        request, 'Add_currentGoalValue.html',
+        {'form': form, 'info': info, 'goal_id': goal_id}
+        )
+
 
 
 @login_required(login_url='login')
