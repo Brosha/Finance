@@ -2,6 +2,7 @@ from django import forms
 from django.core.exceptions import ValidationError
 from django.forms import ModelForm
 from finance.models import Charge, Account, Goal, User
+from django.forms.widgets import PasswordInput
 
 
 class ChargeForm(ModelForm):
@@ -87,8 +88,10 @@ class UserForm(ModelForm):
     class Meta:
         model = User
         fields = ['username', 'password', 'phone_number', 'address']
-
+        widgets = {
+            'password': PasswordInput
+        }
 
 class LoginForm(forms.Form):
     username = forms.CharField()
-    password = forms.CharField()
+    password = forms.CharField(widget=PasswordInput)
