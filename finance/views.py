@@ -160,7 +160,9 @@ def add_goal(request, account_id=0):
     )
 
 
-def add_value_goal(request, goal_id=0):
+@user_check
+@login_required(login_url='login')
+def add_value_goal(request, account_id=0, goal_id=0):
     if request.method == 'POST':
         form = AddCashToGoal(request.POST)
         info = 'goal form is filled, but not correct'
@@ -170,13 +172,13 @@ def add_value_goal(request, goal_id=0):
             val = form.cleaned_data['addvalue']
             goal.value += val
             goal.save()
-            return redirect('/profile/')
+            return redirect('goals', account_id)
     else:
         info = 'goal form is not filled'
         form = AddCashToGoal()
     return render(
         request, 'add_value_to_goal.html',
-        {'form': form, 'info': info, 'goal_id': goal_id}
+        {'form': form, 'info': info, 'goal_id': goal_id, 'account_id': account_id}
         )
 
 

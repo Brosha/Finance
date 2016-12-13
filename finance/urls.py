@@ -17,7 +17,7 @@ urlpatterns = [
     url(r'^register/$', register, name='register'),
     url(r'^login/$', login_view, name='login'),
     url(r'^goals/(?P<account_id>\d{1,16})/$', account_goal_status, name='goals'),
-    url(r'^goals/addvalue/(?P<goal_id>\d{1,16})/$', add_value_goal, name='add_value_goal'),
+    url(r'^goals/addvalue/(?P<account_id>\d{1,16})/(?P<goal_id>\d{1,16})/$', add_value_goal, name='add_value_goal'),
     url(r'^profile/$', profile, name='profile'),
     url(r'^logout/$', logout_view, name='logout'),
     url(r'^api/accounts/(?P<pk>\d{1,16})/$', AccountViewSet.as_view({'get': 'retrieve'})),

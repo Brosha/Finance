@@ -39,7 +39,7 @@
                     <td>{{goals.goalValue}}</td>
 
                     <td>
-                        {% url 'add_value_goal' goals.id as add_value %}
+                        {% url 'add_value_goal' account_id goals.id  as add_value %}
                         <a class="btn btn-primary btn-lg" href="../..{{add_value }}" role="button">Add money</a>
                     </td>>
                 </tr>
