@@ -171,7 +171,19 @@ def add_value_goal(request, account_id=0, goal_id=0):
             goal = Goal.objects.get(pk=goal_id)
             val = form.cleaned_data['addvalue']
             goal.value += val
-            goal.save()
+            if goal.value >= goal.goalValue:
+                charge = Charge.objects.create(value=goal.value,
+                                               date=date.today(),
+                                               account=goal.account,
+                                               category=goal.category,
+                                               purpose=goal.purpose)
+                acc = Account.objects.get(account_number=account_id)
+                acc.total += goal.value
+                acc.save()
+                charge.save()
+                goal.delete()
+            else:
+                goal.save()
             return redirect('goals', account_id)
     else:
         info = 'goal form is not filled'
