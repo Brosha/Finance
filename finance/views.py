@@ -152,7 +152,7 @@ def add_goal(request, account_id=0):
             return redirect('goals', account_id)
     else:
         info = 'Form is not filled'
-        form = GoalForm(initial={'goalValue': Decimal(100), 'purpose': str(140), 'category': str(140)})
+        form = GoalForm(initial={'goalValue': Decimal(100), 'purpose': 'Your purpose', 'category': 'Your category'})
 
     return render(
         request, 'add_goal.html',
@@ -166,19 +166,18 @@ def add_value_goal(request, goal_id=0):
         info = 'goal form is filled, but not correct'
         if form.is_valid():
             info = 'goal form is filled and correct'
-            goal = Goal.objects.get(pk = goal_id)
-            val = form.cleaned_data['AddValue']
+            goal = Goal.objects.get(pk=goal_id)
+            val = form.cleaned_data['addvalue']
             goal.value += val
             goal.save()
-            return redirect('/')
+            return redirect('/profile/')
     else:
         info = 'goal form is not filled'
         form = AddCashToGoal()
     return render(
-        request, 'Add_currentGoalValue.html',
+        request, 'add_value_to_goal.html',
         {'form': form, 'info': info, 'goal_id': goal_id}
         )
-
 
 
 @login_required(login_url='login')
@@ -254,7 +253,7 @@ def login_view(request):
             request.session.set_expiry(300)
             request.session['user_id'] = user.id
             info = 'Username and password are filled and correct'
-            return redirect('/')
+            return redirect('/profile')
     else:
         info = 'Username and password are not filled'
         form = LoginForm()

@@ -98,4 +98,10 @@ class LoginForm(forms.Form):
 
 
 class AddCashToGoal(forms.Form):
-    AddValue = forms.DecimalField(decimal_places= 2, max_digits = 8)
+    addvalue = forms.DecimalField(decimal_places=2, max_digits=8)
+
+    def clean_addvalue(self):
+        val = self.cleaned_data['addvalue']
+        if val <= 0:
+            raise forms.ValidationError("Value can not be zero or negative")
+        return val
