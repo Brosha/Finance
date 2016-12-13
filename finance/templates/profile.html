@@ -4,7 +4,7 @@
     <div class="jumbotron" style ="background-color:#e0e0e0" >
       <div class="container" style="text-align:center">
 		<p></p>
-		<h1>Welcome to your personal wallet</h1>
+		<h1>Welcome to your personal wallet, {{ user.username }}</h1>
 		<p>This service allows you to manage your accounts and track charges. Detailed account statistics will give you more information about spending.</p>
 
       </div>
@@ -44,9 +44,19 @@
 			<div class="control-group">
 			<p style="text-align:center"><a class="btn btn-primary btn-lg" href="/addaccount/" role="button">Validation form</a></p>
 			</div>
+			<h2>Logout</h2>
+		<div class="control-group">
+			<p style="text-align:center"><a class="btn btn-primary btn-lg" href="/logout/" role="button">Logout</a></p>
+		</div>
+			<br>
+			 <h3>
+                  <a href="/">Home</a>
+             </h3>
         </div>
 
+
       </div>
+
     </div>
 
 {% endblock %}

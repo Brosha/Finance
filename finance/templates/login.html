@@ -3,11 +3,11 @@
     <div class="jumbotron" style ="background-color:#e0e0e0" >
       <div class="container" style="text-align:center">
 
-		<h1>My wallet</h1>
+		<h1>Please sign in</h1>
 		</div>
     </div>
      <div class="container" style="text-align:center">
-        <h2>Validation massage (info)</h2>
+        <h2>Validation massage</h2>
         {{ info }}
 
         <form class="form" action="{% url 'login'  %}" method="post">
@@ -39,5 +39,18 @@
             <br>
             <button type="submit" class="btn btn-primary btn-lg">Submit</button>
         </form>
+        <br><br/>
+         <br><br/>
+         <h2>You can join us</h2>
+         <br>
+		<div class="control-group">
+			<p style="text-align:center"><a class="btn btn-primary btn-lg" href="/register/" role="button">Register user</a></p>
+		</div>
+        <br><br/>
+         <h3>
+         <a href="/">Home</a>
+             </h3>
+          <br><br/>
+
     </div>
 {% endblock %}

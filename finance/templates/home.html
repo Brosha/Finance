@@ -3,14 +3,37 @@
 
     <div class="jumbotron" style ="background-color:#e0e0e0" >
       <div class="container" style="text-align:center">
-		<p></p>
-		<h1>Welcome to your personal wallet</h1>
-		<p>This service allows you to manage your accounts and track charges. Detailed account statistics will give you more information about spending.</p>
+		  <p></p>
+		  {% if user.is_authenticated %}
+		   <h1>Welcome, {{ user.username }} </h1>
+
+          {% else %}
+		    <h1>Welcome to your personal wallet.</h1>
+		    <p>This service allows you to manage your accounts and track charges. Detailed account statistics will give you more information about spending.</p>
+          {% endif %}
+
 
       </div>
     </div>
 
-	<div class="container"  >
+
+    {% if user.is_authenticated %}
+    <div class="container"  >
+      <div class="container" style="padding:75px">
+		<div style="text-align:center">
+			<h2>Your profile</h2>
+			<div class="control-group">
+			<p style="text-align:center"><a class="btn btn-primary btn-lg" href="/profile/" role="button">Profile</a></p>
+			</div>
+		<h2>Logout</h2>
+		<div class="control-group">
+			<p style="text-align:center"><a class="btn btn-primary btn-lg" href="/logout/" role="button">Logout</a></p>
+		</div>
+		</div>
+      </div>
+    </div>
+   {% else %}
+    <div class="container"  >
       <div class="container" style="padding:75px">
 		<div style="text-align:center">
 			<h2>Check out account example</h2>
@@ -31,5 +54,7 @@
 		</div>
       </div>
     </div>
+{% endif %}
+
 
 {% endblock %}
