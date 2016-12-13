@@ -3,6 +3,8 @@ from django.core.exceptions import ValidationError
 from django.forms import ModelForm
 from finance.models import Charge, Account, Goal, User
 from django.forms.widgets import PasswordInput
+import phonenumbers
+from phonenumbers.phonenumberutil import NumberParseException
 
 
 class ChargeForm(ModelForm):
@@ -28,8 +30,6 @@ class ChargeForm(ModelForm):
 
         value = self.clean_value()
         date = self.clean_date()
-        print(value)
-        print(date)
 
         if (value <= 0)and(date >= date.today()):
             raise ValidationError('You can not spend money in the future')
@@ -91,6 +91,19 @@ class UserForm(ModelForm):
         widgets = {
             'password': PasswordInput
         }
+
+    def clean_phone_number(self):
+        try:
+            phone = self.cleaned_data['phone_number']
+            ph = phonenumbers.parse(phone, None)
+            if not phonenumbers.is_valid_number(ph):
+                raise ValidationError('Invalid phone number input')
+        except NumberParseException:
+            if phone == "":
+                return phone
+            raise ValidationError('Invalid phone number input (parse)')
+        return phone
+
 
 class LoginForm(forms.Form):
     username = forms.CharField()
