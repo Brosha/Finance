@@ -36,6 +36,7 @@
                             <th style="text-align:center">Name</th>
                             <th style="text-align:center">Account number</th>
                             <th style="text-align:center">View account</th>
+							<th style="text-align:center">Edit account</th>
                         </tr>
                     </thead>
 				    <tbody>
@@ -51,15 +52,14 @@
                     {% else %}
                         <td>-</td>
                     {% endif %}
-
-                    {% if account.name != "" %}
                         <td>
                             {% url 'status'  account.account_number as acc %}
                             <a class="btn btn-primary btn-lg" href="../..{{acc }}" role="button">Go</a>
                         </td>
-                    {% else %}
-                        <td>-</td>
-                    {% endif %}
+						<td>
+							{% url 'edit_account'  account.account_number as edit %}
+                            <a class="btn btn-primary btn-lg" href="../..{{edit }}" role="button">Go</a>
+						</td>
                 </tr>
 
             {% if forloop.last %}

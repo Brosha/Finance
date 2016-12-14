@@ -1,5 +1,6 @@
 from finance.views import home, add_charge, account_status,random_example, add_account, send_total, total, register,\
-    add_goal, login_view, account_goal_status, profile, logout_view, add_value_goal, edit_profile, edit_account
+    add_goal, login_view, account_goal_status, profile, logout_view, add_value_goal, edit_profile, edit_account,\
+    edit_charge
 from django.conf.urls import include, url
 from api.views import AccountViewSet, ChargeViewSet,StatisticsView
 from rest_framework import routers
@@ -10,6 +11,7 @@ urlpatterns = [
     url(r'^charges/$', random_example),
     url(r'^charges/(?P<account_id>\d{1,16})/$', account_status, name='status'),
     url(r'^addcharge/(?P<account_id>\d{1,16})/$', add_charge, name='add_charge'),
+    url(r'^charges/edit/(?P<account_id>\d{1,16})/(?P<charge_id>\d{1,16})/$', edit_charge, name='edit_charge'),
     url(r'^addgoal/(?P<account_id>\d{1,16})/$', add_goal, name='add_goal'),
     url(r'^addaccount/$', add_account, name='add_account'),
     url(r'^account/edit/(?P<account_id>\d{1,16})$', edit_account, name='edit_account'),

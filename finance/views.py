@@ -120,6 +120,43 @@ def add_charge(request, account_id=0):
     )
 
 
+def edit_charge(request, account_id=0, charge_id=0):
+    if request.method == 'POST':
+        form = ChargeForm(request.POST)
+        info = 'Form is filled, but not correct'
+
+        if form.is_valid():
+            info = 'Form is filled and correct'
+            char = Charge.objects.get(pk=charge_id)
+            char.value = form.cleaned_data['value']
+            char.date = form.cleaned_data['date']
+            char.category = form.cleaned_data['category']
+            char.purpose = form.cleaned_data['purpose']
+            acc = Account.objects.get(account_number=account_id)
+            char.account_id = acc.id
+            tot = acc.total + char.value
+            if tot < 0:
+                info = 'Account total can not be negative'
+                form = ChargeForm(initial={'value': Decimal(100), 'date': date.today()})
+                return render(
+                    request, 'edit_charge.html',
+                    {'form': form, 'info': info, 'account_id': account_id, 'charge_id': charge_id}
+                )
+            else:
+                acc.total += char.value
+                acc.save()
+                char.save()
+                return redirect('status', account_id)
+
+    else:
+        info = 'Form is not filled'
+        form = ChargeForm(initial={'value': Decimal(100), 'date': date.today()})
+
+    return render(
+        request, 'edit_charge.html',
+        {'form': form, 'info': info, 'account_id': account_id, 'charge_id': charge_id}
+    )
+
 @user_check
 @login_required(login_url='login')
 def account_goal_status(request, account_id=0):
