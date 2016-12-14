@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="jumbotron" style ="background-color:#e0e0e0" >
+      <div class="container" style="text-align:center">
+
+		<h1>My wallet</h1>
+		</div>
+    </div>
+     <div class="container" style="text-align:center">
+        <h2>Validation massage (info)</h2>
+        {{ info }}
+        <form class="form" action="{% url 'edit_account' account_id %}" method="post">
+            {% for field,errors in form.errors.items %}
+                {% for error in errors %}
+                {% if forloop.first %}
+                    <h3>Form errors</h3>
+                {% endif %}
+                <h4>{{ error }}</h4>
+                {% endfor %}
+            {% endfor %}
+
+            {% for field in form.visible_fields %}
+                <h3>{{ field.label }}</h3>
+                {% for error in field.errors %}
+                    {% if forloop.first %}
+                    <h4>Field errors</h4>
+                    <ul>
+                    {% endif %}
+                    <li>{{ error }}</li>
+                    {% if forloop.last %}
+                    </ul>
+                    {% endif %}
+                {% endfor %}
+            <br>
+            {{ field }}
+            {% endfor %}
+            <br>
+            <br>
+            <button type="submit" class="btn btn-primary btn-lg">Submit</button>
+        </form>
+
+    </div>
+       <title>text-indent</title>
+         <style>
+        P {
+          text-indent: 1.5em; /* Отступ первой строки */
+
+          }
+
+        </style>
+        <body>
+           <h3>
+                 <p><a href="/profile/">Back</a></p>
+        </h3>
+        </body>
+{% endblock %}

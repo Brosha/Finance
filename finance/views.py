@@ -218,6 +218,27 @@ def add_account(request):
         )
 
 
+@user_check
+@login_required(login_url='login')
+def edit_account(request, account_id=0):
+    if request.method == 'POST':
+        form = AccountForm(request.POST)
+        info = 'Account is filled, but not correct'
+        if form.is_valid():
+            acc = Account.objects.get(account_number=account_id)
+            acc.total = form.cleaned_data['total']
+            acc.name = form.cleaned_data['name']
+            acc.save()
+            return redirect('profile')
+    else:
+        info = 'Account is not filled'
+        form = AccountForm()
+    return render(
+        request, 'account_edit.html',
+        {'form': form, 'info': info, 'account_id': account_id}
+        )
+
+
 def register(request):
     if request.method == 'POST':
         form = UserForm(request.POST)
