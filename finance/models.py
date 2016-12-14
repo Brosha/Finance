@@ -12,7 +12,7 @@ class Account(models.Model):
     name = models.CharField(max_length=100)
     total = models.DecimalField(decimal_places=2, max_digits=15)
     account_number = models.BigIntegerField(unique=True)
-    user = models.ForeignKey(User, related_name='+')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='+')
 
     def __str__(self):
         return str(self.account_number)

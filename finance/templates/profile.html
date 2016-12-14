@@ -37,6 +37,7 @@
                             <th style="text-align:center">Account number</th>
                             <th style="text-align:center">View account</th>
 							<th style="text-align:center">Edit account</th>
+                            <th style="text-align:center">Delete account</th>
                         </tr>
                     </thead>
 				    <tbody>
@@ -54,11 +55,15 @@
                     {% endif %}
                         <td>
                             {% url 'status'  account.account_number as acc %}
-                            <a class="btn btn-primary btn-lg" href="../..{{acc }}" role="button">Go</a>
+                            <a class="btn btn-primary btn-lg" href="../..{{acc }}" role="button">View</a>
                         </td>
 						<td>
 							{% url 'edit_account'  account.account_number as edit %}
-                            <a class="btn btn-primary btn-lg" href="../..{{edit }}" role="button">Go</a>
+                            <a class="btn btn-primary btn-lg" href="../..{{edit }}" role="button">Edit</a>
+						</td>
+                        <td>
+							{% url 'del_account'  account.account_number as del %}
+                            <a class="btn btn-primary btn-lg" href="../..{{del }}" role="button">Delete</a>
 						</td>
                 </tr>
 

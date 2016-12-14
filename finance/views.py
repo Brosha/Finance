@@ -299,6 +299,14 @@ def edit_account(request, account_id=0):
         )
 
 
+@user_check
+@login_required(login_url='login')
+def del_account(request, account_id=0):
+    acc = Account.objects.get(account_number=account_id)
+    acc.delete()
+    return redirect('profile')
+
+
 def register(request):
     if request.method == 'POST':
         form = UserForm(request.POST)
@@ -387,16 +395,14 @@ def login_view(request):
 
 @login_required(login_url='login')
 def profile(request):
-
     #user_id = request.session['user_id']
     user_id = request.user.id
-
-    accounts=Account.objects.filter(user=user_id)
+    accounts = Account.objects.filter(user=user_id)
     print(user_id)
-
-        #form.fields['account'].queryset = Account.objects.get(user_id=user_id)
+    #form.fields['account'].queryset = Account.objects.get(user_id=user_id)
     return render(request, 'profile.html',
-                  { 'user_id': user_id, 'accounts':accounts})
+                  {'user_id': user_id, 'accounts': accounts}
+                  )
 
 
 def logout_view(request):

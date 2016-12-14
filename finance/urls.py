@@ -1,6 +1,6 @@
 from finance.views import home, add_charge, account_status,random_example, add_account, send_total, total, register,\
     add_goal, login_view, account_goal_status, profile, logout_view, add_value_goal, edit_profile, edit_account,\
-    edit_charge, del_charge
+    edit_charge, del_charge, del_account
 from django.conf.urls import include, url
 from api.views import AccountViewSet, ChargeViewSet,StatisticsView
 from rest_framework import routers
@@ -16,6 +16,7 @@ urlpatterns = [
     url(r'^addgoal/(?P<account_id>\d{1,16})/$', add_goal, name='add_goal'),
     url(r'^addaccount/$', add_account, name='add_account'),
     url(r'^account/edit/(?P<account_id>\d{1,16})$', edit_account, name='edit_account'),
+    url(r'^account/delete/(?P<account_id>\d{1,16})/$', del_account, name='del_account'),
     url(r'^download/total/(?P<account_id>\d{1,16})/$', send_total, name='total_line'),
     url(r'^statistic/total/(?P<account_id>\d{1,16})/$', total, name='total_table'),
     url(r'^profile/edit/$', edit_profile, name='edit_profile'),
@@ -25,6 +26,7 @@ urlpatterns = [
     url(r'^goals/addvalue/(?P<account_id>\d{1,16})/(?P<goal_id>\d{1,16})/$', add_value_goal, name='add_value_goal'),
     url(r'^profile/$', profile, name='profile'),
     url(r'^logout/$', logout_view, name='logout'),
+
     url(r'^api/accounts/(?P<pk>\d{1,16})/$', AccountViewSet.as_view({'get': 'retrieve'})),
     url(r'^api/accounts/create/$', AccountViewSet.as_view({'post': 'create'})),
     url(r'^api/accounts/delete/(?P<pk>\d{1,16})/$', AccountViewSet.as_view({'delete': 'destroy'})),
