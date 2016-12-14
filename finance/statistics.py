@@ -19,15 +19,18 @@ def getTotalLine (charges, account):
         y.append(total)
         total -= charge.value
     filename = 'total.png'
-    plt.figure(1)
-    plt.clf()
+    # plt.figure(1)
+    # plt.clf()
     fig, ax = plt.subplots()
     plt.plot(x, y, 'bo')
     plt.plot(x, y, '-b')
+    #plt.xticks(x, rotation='diagonal')
     plt.margins(0.2)
     fig.autofmt_xdate()
     plt.title("Account: " + str(account.account_number))
     plt.savefig('static/img/total.png', format='png')
+    plt.clf()
+    plt.close()
     return filename
 
 
