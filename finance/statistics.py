@@ -1,3 +1,5 @@
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from finance.models import Charge, Account
 import numpy as np
@@ -30,7 +32,8 @@ def getTotalLine (charges, account):
     plt.title("Account: " + str(account.account_number))
     plt.savefig('static/img/total.png', format='png')
     plt.clf()
-    plt.close()
+    #plt.close(fig)
+    plt.close("all")
     return filename
 
 

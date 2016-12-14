@@ -120,6 +120,7 @@ def add_charge(request, account_id=0):
     )
 
 
+@login_required(login_url='login')
 def edit_charge(request, account_id=0, charge_id=0):
     if request.method == 'POST':
         form = ChargeForm(request.POST)
@@ -156,6 +157,7 @@ def edit_charge(request, account_id=0, charge_id=0):
         request, 'edit_charge.html',
         {'form': form, 'info': info, 'account_id': account_id, 'charge_id': charge_id}
     )
+
 
 @user_check
 @login_required(login_url='login')
