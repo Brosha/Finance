@@ -35,7 +35,7 @@ def home(request):
 def random_example(request):
     account = controller.random_account()
     return render(
-        request, 'table.html',
+        request, 'exampletable.html',
         {'account': account}
     )
 
