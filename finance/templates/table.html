@@ -51,6 +51,7 @@
     </br>
 
     <div class="container" style="text-align:center">
+        margin: 0;
         {% for charge in account %}
             {% if forloop.first %}
                 <h2>Outcome</h2>
@@ -121,26 +122,26 @@
         </div>
     </div>
 
+
+
     <div class="container">
+
         <div class="control-group">
             <p style="text-align:center">
                 {% url 'goals' account_id as goals_url %}
                 <a class="btn btn-primary btn-lg" href="../..{{goals_url}}" role="button">Your Goals</a>
             </p>
         </div>
+
     </div>
-        <title>text-indent</title>
-         <style>
-        P {
-          text-indent: 1.5em; /* Отступ первой строки */
+ <div class="container">
+        <div class="control-group" style="align-content:left">
+            <p >
 
-          }
+                <a class="btn btn-primary btn-lg" href=/profile/" role="button">Back</a>
+            </p>
+        </div>
+    </div>
 
-        </style>
-        <body>
-           <h3>
-                 <p><a href="/profile/">Back</a></p>
-        </h3>
-        </body>
 
 {% endblock %}

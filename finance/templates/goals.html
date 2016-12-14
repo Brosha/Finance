@@ -12,7 +12,7 @@
             {% if forloop.first %}
                 <h2>Goals</h2>
                 </br>
-                <table class="table"  >
+                <table class="table">
                     <thead>
                         <tr>
                             <th style="text-align:center">Charge</th>
@@ -41,7 +41,7 @@
                     <td>
                         {% url 'add_value_goal' account_id goals.id  as add_value %}
                         <a class="btn btn-primary btn-lg" href="../..{{add_value }}" role="button">Add money</a>
-                    </td>>
+                    </td>
                 </tr>
 
             {% if forloop.last %}
@@ -59,6 +59,14 @@
             <p style="text-align:center">
                 {% url 'add_goal' account_id as goals_url %}
                 <a class="btn btn-primary btn-lg" href="../..{{goals_url}}" role="button">Add Goal</a>
+            </p>
+        </div>
+    </div>
+    <div class="container">
+        <div class="control-group" style="align-content:left">
+            <p >
+
+                <a class="btn btn-primary btn-lg" href=/profile/" role="button">Back</a>
             </p>
         </div>
     </div>
