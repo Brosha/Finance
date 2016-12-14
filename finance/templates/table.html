@@ -6,7 +6,7 @@
 		<h1>My wallet</h1>
 		</div>
     </div>
-
+     {% if flag1 == 1 %}
     <div class="container" style="text-align:center">
         {% for charge in account %}
             {% if forloop.first %}
@@ -52,10 +52,12 @@
             {% endif %}
         {% endfor %}
     </div>
+   {% endif %}
     </br>
     </br>
 
     <div class="container" style="text-align:center">
+        {% if flag2 == 2 %}
         {% for charge in account %}
             {% if forloop.first %}
                 <h2>Outcome</h2>
@@ -94,6 +96,8 @@
                 </table>
             {% endif %}
         {% endfor %}
+        {% endif %}
+
         <div class="container">
             <p style="text-align:right">
                 <b>Your total: {{acc.total}}</b>

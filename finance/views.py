@@ -76,11 +76,21 @@ def total(request, account_id):
 def account_status(request, account_id=0):
     acc = Account.objects.get(account_number=account_id)
     charges = list(Charge.objects.filter(account=acc.id).order_by('date'))
+    flag1 = 0
+    flag2 = 0
+    for charge in charges:
+        print(charge.value)
+        if charge.value>0:
+            flag1=1
+        elif charge.value<0:
+            flag2=2
+
+
     name = getTotalLine(charges, acc)
     #print(charges)
     return render(
         request, 'table.html',
-        {'account': charges, 'account_id': account_id, 'acc': acc}
+        {'account': charges, 'account_id': account_id, 'acc': acc,'flag1':flag1, 'flag2':flag2 }
     )
 
 
