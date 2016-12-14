@@ -20,6 +20,7 @@
                             <th style="text-align:center">Category</th>
                             <th style="text-align:center">Date</th>
                             <th style="text-align:center">Edit charge</th>
+                            <th style="text-align:center">Delete charge</th>
                         </tr>
                     </thead>
 				    <tbody>
@@ -41,6 +42,10 @@
                             <td>
                                 {% url 'edit_charge'  acc.account_number charge.id as edit %}
                             <a class="btn btn-primary btn-lg" href="../..{{edit }}" role="button">Edit</a>
+                            </td>
+                            <td>
+                                {% url 'del_charge'  acc.account_number charge.id as del %}
+                            <a class="btn btn-primary btn-lg" href="../..{{del }}" role="button">Delete</a>
                             </td>
 
                         </tr>
@@ -67,6 +72,8 @@
                             <th style="text-align:center">Purpose</th>
                             <th style="text-align:center">Category</th>
                             <th style="text-align:center">Date</th>
+                            <th style="text-align:center">Edit charge</th>
+                            <th style="text-align:center">Delete charge</th>
                         </tr>
                     </thead>
 				    <tbody>
@@ -85,6 +92,14 @@
                                 <td>-</td>
                             {% endif %}
                             <td>{{charge.date}}</td>
+                             <td>
+                                {% url 'edit_charge'  acc.account_number charge.id as edit %}
+                            <a class="btn btn-primary btn-lg" href="../..{{edit }}" role="button">Edit</a>
+                            </td>
+                            <td>
+                                {% url 'del_charge'  acc.account_number charge.id as del %}
+                            <a class="btn btn-primary btn-lg" href="../..{{del }}" role="button">Delete</a>
+                            </td>
 
                         </tr>
             {% endif %}
