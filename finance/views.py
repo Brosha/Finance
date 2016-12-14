@@ -87,7 +87,7 @@ def account_status(request, account_id=0):
 @user_check
 @login_required(login_url='login')
 def add_charge(request, account_id=0):
-    request.session['flag'] = False
+
     if request.method == 'POST':
         form = ChargeForm(request.POST)
         info = 'Form is filled, but not correct'
