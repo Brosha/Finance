@@ -21,8 +21,12 @@ def getTotalLine (charges, account):
     filename = 'total.png'
     plt.figure(1)
     plt.clf()
-    plt.plot(x, y)
-    plt.title("Account" + str(account.account_number))
+    fig, ax = plt.subplots()
+    plt.plot(x, y, 'bo')
+    plt.plot(x, y, '-b')
+    plt.margins(0.2)
+    fig.autofmt_xdate()
+    plt.title("Account: " + str(account.account_number))
     plt.savefig('static/img/total.png', format='png')
     return filename
 

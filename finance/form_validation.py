@@ -118,3 +118,31 @@ class AddCashToGoal(forms.Form):
         if val <= 0:
             raise forms.ValidationError("Value can not be zero or negative")
         return val
+
+
+class EditProfile(forms.Form):
+    username = forms.CharField(required=False)
+    password = forms.CharField(widget=PasswordInput, required=False)
+    phone_number = forms.CharField(required=False)
+    address = forms.CharField(required=False)
+
+    def clean_phone_number(self):
+        try:
+            phone = self.cleaned_data['phone_number']
+            ph = phonenumbers.parse(phone, None)
+            if not phonenumbers.is_valid_number(ph):
+                raise ValidationError('Invalid phone number input')
+        except NumberParseException:
+            if phone == "":
+                return phone
+            raise ValidationError('Invalid phone number input (parse)')
+        return phone
+
+    def clean_username(self):
+        try:
+            username = self.cleaned_data['username']
+            if User.objects.filter(username=username).exists():
+                raise ValidationError('User with this name is already exists')
+        except:
+            raise ValidationError('Invalid username input')
+        return username

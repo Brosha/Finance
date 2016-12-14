@@ -6,7 +6,8 @@
 		<p></p>
 		<h1>Welcome to your personal wallet, {{ user.username }}</h1>
 		<p>This service allows you to manage your accounts and track charges. Detailed account statistics will give you more information about spending.</p>
-
+		<p>Your phone number: {{user.phone_number}}</p>
+		  <p>Your address: {{user.address}}</p>
       </div>
     </div>
 
@@ -44,7 +45,14 @@
 			<div class="control-group">
 			<p style="text-align:center"><a class="btn btn-primary btn-lg" href="/addaccount/" role="button">Validation form</a></p>
 			</div>
+
+			<h2>Edit Profile</h2>
+			<div class="control-group">
+			<p style="text-align:center"><a class="btn btn-primary btn-lg" href="/profile/edit" role="button">Edit Profile</a></p>
+			</div>
+
 			<h2>Logout</h2>
+
 		<div class="control-group">
 			<p style="text-align:center"><a class="btn btn-primary btn-lg" href="/logout/" role="button">Logout</a></p>
 		</div>

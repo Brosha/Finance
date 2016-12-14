@@ -5,7 +5,8 @@ from finance import controller
 from decimal import Decimal
 from datetime import date
 from finance.models import Account, Charge, User, Goal
-from finance.form_validation import ChargeForm, GetAccountsListForm, AccountForm, GoalForm, UserForm, LoginForm, AddCashToGoal
+from finance.form_validation import ChargeForm, GetAccountsListForm, AccountForm, GoalForm, UserForm, LoginForm,\
+    AddCashToGoal, EditProfile
 from random import randint
 from finance.statistics import getTotalLine, getTotalTable
 from django.db import transaction
@@ -242,6 +243,32 @@ def register(request):
         form = UserForm()
     return render(
         request, 'register.html',
+        {'form': form, 'info': info}
+        )
+
+
+@login_required(login_url='login')
+def edit_profile(request):
+    if request.method == 'POST':
+        form = EditProfile(request.POST)
+        info = 'Account is filled, but not correct'
+        if form.is_valid():
+            info = 'Account is filled and correct'
+            olduser = User.objects.get(pk=request.user.id)
+            if form.cleaned_data['username'] is not "":
+                olduser.username = form.cleaned_data['username']
+            if form.cleaned_data['password'] is not "":
+                olduser.set_password(form.cleaned_data['password'])
+            olduser.address = form.cleaned_data['address']
+            olduser.phone = form.cleaned_data['phone_number']
+            print(form.cleaned_data)
+            olduser.save()
+            return redirect('/')
+    else:
+        info = 'Account is not filled'
+        form = EditProfile()
+    return render(
+        request, 'editprofile.html',
         {'form': form, 'info': info}
         )
 
