@@ -11,17 +11,19 @@
     </div>
 
 	<div class="container"  >
-      <div class="container" style="padding:75px">
-		<div style="text-align:center">
+
+        <div class="container" style="padding:75px">
+		  <div style="text-align:center">
 			<h2>Check out account example</h2>
 
 			<p>You can experience benefits of using our services by randomly generated account.</p>
 			<div class="control-group">
 			<p style="text-align:center"><a class="btn btn-primary btn-lg" href="/charges/" role="button">Generate</a></p>
 			</div>
-        </div>
-      </div>
+         </div>
+       </div>
 
+		{% if request.session.flag %}
 		<div class="container" style="padding:75px">
 			<div style="text-align:center">
 				<h2>Choose your account or create new</h2>
@@ -35,6 +37,11 @@
 				</form>
 			</div>
 		</div>
+		{% else %}
+		    <div style="text-align:center">
+				<h2>Create new account</h2>
+			</div>
+		{% endif %}
 
 		<div class="container" style="padding:75px">
 		<div style="text-align:center">
@@ -55,7 +62,8 @@
         </div>
 
 
-      </div>
+		</div>
+
 
     </div>
 
