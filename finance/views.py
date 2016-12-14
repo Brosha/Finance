@@ -169,7 +169,15 @@ def edit_charge(request, account_id=0, charge_id=0):
     )
 
 
-#def del_charge(request, account_id=0, charge_id=0):
+@user_check
+@login_required(login_url='login')
+def del_charge(request, account_id=0, charge_id=0):
+    charge = Charge.objects.get(pk=charge_id)
+    acc = Account.objects.get(account_number=account_id)
+    acc.total -= charge.value
+    acc.save()
+    charge.delete()
+    return redirect('status', account_id)
 
 
 @user_check
