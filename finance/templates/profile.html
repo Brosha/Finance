@@ -25,19 +25,49 @@
        </div>
 
 
-		<div class="container" style="padding:75px">
-			<div style="text-align:center">
-				<h2>Choose your account or create new</h2>
-			</div>
-			<div style="text-align:center">
-				<form class="form" action="{% url 'profile' %}" method="post">
-					{{ form }}
-					<div style="text-align:center">
-						<button type="submit" class="btn btn-primary btn-lg">Submit</button>
-					</div>
-				</form>
-			</div>
-		</div>
+		<div class="container" style="text-align:center">
+          {% for account in accounts %}
+            {% if forloop.first %}
+                <h2>Accounts</h2>
+                </br>
+                <table class="table"  >
+                    <thead>
+                        <tr>
+                            <th style="text-align:center">Name</th>
+                            <th style="text-align:center">Account number</th>
+                            <th style="text-align:center">View account</th>
+                        </tr>
+                    </thead>
+				    <tbody>
+            {% endif %}
+                <tr>
+                    {% if account.name != "" %}
+                        <td>{{account.name}}</td>
+                    {% else %}
+                        <td>-</td>
+                    {% endif %}
+                    {% if account.account_number != "" %}
+                        <td>{{account.account_number}}</td>
+                    {% else %}
+                        <td>-</td>
+                    {% endif %}
+
+                    {% if account.name != "" %}
+                        <td>
+                            {% url 'status'  account.account_number as acc %}
+                            <a class="btn btn-primary btn-lg" href="../..{{acc }}" role="button">Go</a>
+                        </td>
+                    {% else %}
+                        <td>-</td>
+                    {% endif %}
+                </tr>
+
+            {% if forloop.last %}
+                    </tbody>
+                </table>
+            {% endif %}
+        {% endfor %}
+       </div>
 
 		<div class="container" style="padding:75px">
 		<div style="text-align:center">

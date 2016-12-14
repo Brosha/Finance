@@ -309,16 +309,13 @@ def profile(request):
 
     #user_id = request.session['user_id']
     user_id = request.user.id
+
+    accounts=Account.objects.filter(user=user_id)
     print(user_id)
-    if request.method == 'POST':
-        form = GetAccountsListForm(request.POST, user_id=user_id)
-        if form.is_valid():
-            return redirect('status', form.cleaned_data.get('account').account_number)
-    else:
-        form = GetAccountsListForm(user_id=user_id)
+
         #form.fields['account'].queryset = Account.objects.get(user_id=user_id)
     return render(request, 'profile.html',
-                  {'form': form, 'user_id': user_id})
+                  { 'user_id': user_id, 'accounts':accounts})
 
 
 def logout_view(request):
