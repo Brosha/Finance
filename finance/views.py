@@ -15,6 +15,16 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.messages import error
 from django.contrib.auth.decorators import login_required
 import csv
+from rest_framework import viewsets, status, views
+
+from finance.serializers import AccountSerializer, ChargeSerializer, StatisticsSerializer, UserProfileSerializer
+from django.http import HttpResponse
+from rest_framework.renderers import JSONRenderer
+from rest_framework.parsers import JSONParser
+from rest_framework.response import Response
+from rest_framework.permissions import IsAdminUser, IsAuthenticated
+from api.permissions import IsAccountOwner, IsChargeOwner
+
 
 
 #This decorator is checking user
@@ -382,7 +392,9 @@ def login_view(request):
             login(request, user)
             request.session.set_expiry(300)
             request.session['user_id'] = user.id
+            request
             info = 'Username and password are filled and correct'
+
             return redirect('/profile')
     else:
         info = 'Username and password are not filled'
@@ -408,6 +420,72 @@ def profile(request):
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect('/')
+
+class JSONResponse(HttpResponse):
+    def __init__(self, data, **kwargs):
+        content = JSONRenderer().render(data)
+        kwargs['content_type'] = 'application/json'
+        super(JSONResponse, self).__init__(content, **kwargs)
+
+
+# def account_list(request):
+#     if request.method == 'GET':
+#         accounts = Account.objects.all()
+#         serializer = AccountSerializer(accounts, many=True)
+#         return JSONResponse(serializer.data)
+
+
+# def charge_list(request):
+#     if request.method == 'GET':
+#         charges = Charge.objects.all()
+#         serializer = ChargeSerializer(charges, many=True)
+#         return JSONResponse(serializer.data)
+
+
+class UserProfileViewSet(viewsets.ViewSet):  # сделал ночью
+    def list(self, request):
+        queryset = User.objects.filter(id=request.session['user_id'])
+        serializer = UserProfileSerializer(queryset, many=True)
+        kek = Account.objects.filter(user=request.session['user_id'])
+        serializer = AccountSerializer(kek, many=True)
+        return Response(serializer.data)
+
+class AccViewSet(viewsets.ViewSet):  # сделал ночью
+    def list(self, request):
+        queryset = Account.objects.filter(user=request.session['user_id'])
+        serializer = AccountSerializer(queryset, many=True)
+        return Response(serializer.data)
+class ChrgViewSet(viewsets.ViewSet):  # сделал ночью
+    def list(self, request):
+        queryset = Charge.objects.filter(user=request.session['user_id'])
+        serializer = ChargeSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+class AccountViewSet(viewsets.ModelViewSet):
+    serializer_class = AccountSerializer
+    permission_classes = (IsAccountOwner, IsAuthenticated)
+
+    def get_queryset(self):
+        return Account.objects.all()
+
+
+class ChargeViewSet(viewsets.ModelViewSet):
+    serializer_class = ChargeSerializer
+    permission_classes = (IsAuthenticated, IsChargeOwner)
+
+    def get_queryset(self):
+        return Charge.objects.filter(account_id__userid__exact=self.request.user.id)
+
+
+class StatisticsView(views.APIView):
+    permission_classes = (IsAccountOwner, IsAuthenticated)
+
+    def get(self, request, pk=None, format=None):
+        acc = Account.objects.get(account_number=pk)
+        self.check_object_permissions(request, acc)
+        charges = getTotalTable(pk)
+        serializer = StatisticsSerializer(charges, many=True)
+        return Response(serializer.data)
 
 
 

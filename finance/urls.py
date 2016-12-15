@@ -1,8 +1,8 @@
 from finance.views import home, add_charge, account_status,random_example, add_account, send_total, total, register,\
     add_goal, login_view, account_goal_status, profile, logout_view, add_value_goal, edit_profile, edit_account,\
-    edit_charge, del_charge, del_account
+    edit_charge, del_charge, del_account, AccViewSet,ChrgViewSet, UserProfileViewSet
 from django.conf.urls import include, url
-from api.views import AccountViewSet, ChargeViewSet,StatisticsView
+from api.api import AccountViewSet, ChargeViewSet,StatisticsView
 from rest_framework import routers
 
 
@@ -26,6 +26,11 @@ urlpatterns = [
     url(r'^goals/addvalue/(?P<account_id>\d{1,16})/(?P<goal_id>\d{1,16})/$', add_value_goal, name='add_value_goal'),
     url(r'^profile/$', profile, name='profile'),
     url(r'^logout/$', logout_view, name='logout'),
+
+
+    url(r'^api/accs/$', AccViewSet.as_view({'get': 'list'})),
+    url(r'^api/chr/$', ChrgViewSet.as_view({'get': 'list'})),
+    url(r'^api/userprofile/$', UserProfileViewSet.as_view({'get': 'list'})),
 
     url(r'^api/accounts/(?P<pk>\d{1,16})/$', AccountViewSet.as_view({'get': 'retrieve'})),
     url(r'^api/accounts/create/$', AccountViewSet.as_view({'post': 'create'})),
